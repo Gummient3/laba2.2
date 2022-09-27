@@ -438,6 +438,7 @@ namespace CppCLRWinformsProjekt {
 			// 
 			this->result->Location = System::Drawing::Point(13, 21);
 			this->result->Name = L"result";
+			this->result->ReadOnly = true;
 			this->result->Size = System::Drawing::Size(216, 20);
 			this->result->TabIndex = 23;
 			this->result->Text = L"0";
@@ -450,9 +451,9 @@ namespace CppCLRWinformsProjekt {
 			this->label1->AutoSize = true;
 			this->label1->Location = System::Drawing::Point(181, 24);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(35, 13);
+			this->label1->Size = System::Drawing::Size(0, 13);
 			this->label1->TabIndex = 24;
-			this->label1->Text = L"label1";
+			this->label1->Click += gcnew System::EventHandler(this, &Form1::label1_Click_1);
 			// 
 			// Form1
 			// 
@@ -487,7 +488,7 @@ namespace CppCLRWinformsProjekt {
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->MaximizeBox = false;
 			this->Name = L"Form1";
-			this->Text = L"Form1";
+			this->Text = L"Calc";
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -750,6 +751,8 @@ private: System::Void button15_Click(System::Object^ sender, System::EventArgs^ 
 	catch (...) {
 		System::Console::WriteLine("Error");
 	}
+}
+private: System::Void label1_Click_1(System::Object^ sender, System::EventArgs^ e) {
 }
 };
 }
