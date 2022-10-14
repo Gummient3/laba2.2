@@ -26,7 +26,7 @@ namespace CppCLRWinformsProjekt {
 	
 	
 
-
+	
 
 	void ReplaceStringInPlace(std::string& subject, const std::string& search,
 		const std::string& replace) {
@@ -50,7 +50,153 @@ namespace CppCLRWinformsProjekt {
 			//TODO: Konstruktorcode hier hinzufьgen.
 			//
 			
+			
 		}
+
+
+		void formatfunc(System::Windows::Forms::KeyPressEventArgs^ e, System::Windows::Forms::TextBox^ txt, System::Windows::Forms::Label^ lbl) {
+			
+			if ((e->KeyChar <= 47 || e->KeyChar >= 58) && e->KeyChar != 8)
+			{
+				e->Handled = true;
+			}
+			if (e->KeyChar == ',' && txt->TextLength == 0) {
+				txt->Text = "0,";
+				//txt->SelectionStart = txt->Text->Length;
+			}
+			if (e->KeyChar == ',') {
+				String^ s = txt->Text->ToString();
+				int counter = 0;
+				for (int x = 0; x < txt->TextLength; x++) {
+					if (s[x] == ',') { counter++; }
+				}
+				if (counter < 1) {
+					txt->Text += ",";
+				}
+				//txt->SelectionStart = txt->Text->Length;
+
+			}
+			/*try {
+				if (txt->Text->ToString()[0] != '-' && txt->TextLength >= 1 && e->KeyChar == '-') {
+					txt->Text = "-" + txt->Text;
+					txt->SelectionStart = txt->Text->Length;
+
+
+				}
+				else if (txt->Text->ToString()[0] == '-' && txt->TextLength >= 1 && e->KeyChar == '-') {
+					String^ tmptxt = "";
+
+					for (int i = 1;;) {
+						tmptxt += txt->Text[i];
+						i++;
+						if (i == txt->TextLength) {
+							txt->Text = tmptxt;
+							break;
+						}
+					}
+					//txt->SelectionStart = txt->Text->Length;
+
+
+				}
+			}
+			catch (...) {
+
+			}
+			*/
+
+
+
+
+
+			if (e->KeyChar == 45 && txt->TextLength == 0) {
+				String^ s = txt->Text->ToString();
+				int counter = 0;
+				for (int x = 0; x < txt->TextLength; x++) {
+					if (s[x] == '-') { counter++; }
+				}
+				if (counter < 1) {
+					txt->Text += "-";
+				}
+				//txt->SelectionStart = txt->Text->Length;
+			}
+			if (txt->Text == "-," && txt->TextLength == 2) {
+				txt->Text = "-0,";
+				//txt->SelectionStart = txt->Text->Length;
+			}
+			if (e->KeyChar == '+') {
+				try {
+					a = System::Convert::ToDouble(txt->Text);
+					txt->Clear();
+					count = 1;
+					lbl->Text = a.ToString() + "+";
+					Sign = true;
+
+				}
+
+				catch (...) {
+					System::Console::WriteLine("Error");
+				}
+
+			}
+			else if(e->KeyChar == '-'){
+				try {
+					a = System::Convert::ToDouble(result->Text);
+					result->Clear();
+					count = 2;
+					label1->Text = a.ToString() + "-";
+					Sign = true;
+				}
+				catch (...) {
+
+					System::Console::WriteLine("Error");
+				}
+
+			}
+			else if (e->KeyChar == '*') {
+				try {
+					a = System::Convert::ToDouble(result->Text);
+					result->Clear();
+					count = 3;
+					label1->Text = a.ToString() + "*";
+					Sign = true;
+
+				}
+				catch (...) {
+					System::Console::WriteLine("Error");
+
+				}
+				
+			}
+			else if (e->KeyChar == '/') {
+				try {
+					a = System::Convert::ToDouble(result->Text);
+					result->Clear();
+					count = 4;
+					label1->Text = a.ToString() + "/";
+					Sign = true;
+
+				}
+
+				catch (...) {
+					System::Console::WriteLine("Error");
+				}
+			}
+			else if (e->KeyChar == 13) { // 13 = Enter
+				label1->Text = "";
+				calculate();
+
+			}
+
+
+
+
+
+			txt->SelectionStart = txt->Text->Length;
+
+
+		}
+
+
 		void calculate()
 		{
 			try {
@@ -438,12 +584,12 @@ namespace CppCLRWinformsProjekt {
 			// 
 			this->result->Location = System::Drawing::Point(13, 21);
 			this->result->Name = L"result";
-			this->result->ReadOnly = true;
 			this->result->Size = System::Drawing::Size(216, 20);
 			this->result->TabIndex = 23;
 			this->result->Text = L"0";
 			this->result->Click += gcnew System::EventHandler(this, &Form1::result_Click);
 			this->result->TextChanged += gcnew System::EventHandler(this, &Form1::textBox1_TextChanged);
+			this->result->Enter += gcnew System::EventHandler(this, &Form1::result_Enter);
 			this->result->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::result_KeyPress);
 			// 
 			// label1
@@ -457,6 +603,7 @@ namespace CppCLRWinformsProjekt {
 			// 
 			// Form1
 			// 
+			this->AcceptButton = this->button13;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(242, 259);
@@ -485,11 +632,14 @@ namespace CppCLRWinformsProjekt {
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button1);
+			this->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->MaximizeBox = false;
 			this->Name = L"Form1";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Calc";
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
+			this->Enter += gcnew System::EventHandler(this, &Form1::Form1_Enter);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -622,10 +772,7 @@ private: System::Void button9_Click(System::Object^ sender, System::EventArgs^ e
 		}
 }
 private: System::Void result_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
-	if ((e->KeyChar <= 47 || e->KeyChar >= 58) && e->KeyChar != 8 && e->KeyChar != 42 && e->KeyChar != 43 && e->KeyChar != 44 && e->KeyChar != 45 && e->KeyChar != 47)
-	{
-		e->Handled = true;
-	}
+	formatfunc(e, this->result, this->label1);
 }
 private: System::Void label_Click(System::Object^ sender, System::EventArgs^ e) {
 }
@@ -713,10 +860,19 @@ private: System::Void button19_Click(System::Object^ sender, System::EventArgs^ 
 
 }
 private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
+
+	
 }
 private: System::Void button22_Click(System::Object^ sender, System::EventArgs^ e) {
 	result->Text = "";
 }
+
+
+
+
+
+
+
 private: System::Void button17_Click(System::Object^ sender, System::EventArgs^ e) {
 	try {
 		a = System::Convert::ToDouble(result->Text);
@@ -753,6 +909,14 @@ private: System::Void button15_Click(System::Object^ sender, System::EventArgs^ 
 	}
 }
 private: System::Void label1_Click_1(System::Object^ sender, System::EventArgs^ e) {
+}
+
+private: System::Void Form1_Enter(System::Object^ sender, System::EventArgs^ e) {
+	
+}
+private: System::Void result_Enter(System::Object^ sender, System::EventArgs^ e) {
+
+	
 }
 };
 }
