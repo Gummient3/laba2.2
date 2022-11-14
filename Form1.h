@@ -223,7 +223,7 @@ namespace CppCLRWinformsProjekt {
 					else
 					{
 						b = (a) / (System::Convert::ToDouble(result->Text));
-						result->Text = b.ToString();
+						label1->Text = b.ToString() + "/";
 						
 					}
 					break;
