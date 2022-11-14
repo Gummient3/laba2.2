@@ -822,7 +822,9 @@ private: System::Void button14_Click(System::Object^ sender, System::EventArgs^ 
 	
 }
 private: System::Void button13_Click(System::Object^ sender, System::EventArgs^ e) {
-	label1->Text = "";
+	//label1->Text = ""; //удалить или оставить?
+	
+	
 	calculate();
 
 	
